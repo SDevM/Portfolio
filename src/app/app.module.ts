@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ScreensaverComponent } from './components/screensaver/screensaver.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ScreensaverComponent
   ],
   imports: [
     BrowserModule,

@@ -12,8 +12,12 @@ export class AppComponent {
     return this.screenSave;
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(e: any) {
+  constructor() {
+    this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 8);
+  }
+
+  @HostListener('document:mousemove')
+  onMouseMove() {
     this.screenSave = false;
     clearTimeout(this.stopwatch);
     this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 5);

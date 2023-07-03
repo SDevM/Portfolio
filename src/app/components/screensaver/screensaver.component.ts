@@ -3,7 +3,7 @@ import {
   Component,
   ElementRef,
   Input,
-  OnInit,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { Vector } from 'src/app/interfaces/vector.interface';
@@ -13,7 +13,7 @@ import { Vector } from 'src/app/interfaces/vector.interface';
   templateUrl: './screensaver.component.html',
   styleUrls: ['./screensaver.component.scss'],
 })
-export class ScreensaverComponent implements AfterViewInit {
+export class ScreensaverComponent implements AfterViewInit, OnDestroy {
   @Input('container') container!: HTMLDivElement;
   @Input('speed') speed!: number;
   @ViewChild('sdevm') sdevm!: ElementRef<HTMLSpanElement>;
@@ -21,6 +21,7 @@ export class ScreensaverComponent implements AfterViewInit {
   private xDiff: number = 1;
   private bounds?: Vector;
   private floatingBounds?: Vector;
+  private timer: any;
 
   ngAfterViewInit(): void {
     // console.log(this.sdevm.nativeElement.offsetLeft);
@@ -41,7 +42,7 @@ export class ScreensaverComponent implements AfterViewInit {
     /**
      * Begin looping animation at 30fps
      */
-    setInterval(this.updateLoop, 1000 / 120);
+    this.timer = setInterval(this.updateLoop, 1000 / 120);
   }
 
   /**
@@ -90,4 +91,8 @@ export class ScreensaverComponent implements AfterViewInit {
     this.sdevm.nativeElement.style.top =
       this.sdevm.nativeElement.offsetTop + this.yDiff * this.speed + 'px';
   };
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+  }
 }

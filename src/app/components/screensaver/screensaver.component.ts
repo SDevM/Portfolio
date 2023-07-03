@@ -62,7 +62,7 @@ export class ScreensaverComponent implements AfterViewInit {
       this.sdevm.nativeElement.offsetLeft - this.floatingBounds!.x / 2 <=
       0
     ) {
-      //Green
+      //Aqua
       this.sdevm.nativeElement.style.color = '#00ffff';
       this.xDiff = 1;
     }
@@ -80,7 +80,7 @@ export class ScreensaverComponent implements AfterViewInit {
       this.sdevm.nativeElement.offsetTop - this.floatingBounds!.y / 2 <=
       0
     ) {
-      //Blue
+      //White
       this.sdevm.nativeElement.style.color = '#ffffff';
       this.yDiff = 1;
     }

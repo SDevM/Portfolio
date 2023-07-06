@@ -3,7 +3,8 @@
  */
 export interface Statement {
   trueVal: string;
-  displayVal: string;
+  displayVal?: string;
+  bipCode: number;
   etchRate: number;
   postDelay: number;
   complete?: (statement: Statement) => {};

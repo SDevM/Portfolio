@@ -13,13 +13,13 @@ export class AppComponent {
   }
 
   constructor() {
-    this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 8);
+    this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 30);
   }
 
   @HostListener('document:mousemove')
   onMouseMove() {
     this.screenSave = false;
     clearTimeout(this.stopwatch);
-    this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 5);
+    this.stopwatch = setTimeout(() => (this.screenSave = true), 1000 * 60);
   }
 }

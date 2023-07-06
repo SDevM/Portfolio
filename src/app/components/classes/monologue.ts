@@ -15,12 +15,17 @@ export class Monologue {
     return this.sequence;
   }
 
-  constructor() {}
+  /**
+   * Create a new Monologue, an initial sequence may be provided
+   * @param digest Initial sequence of statement, more can be added using addStatement
+   */
+  constructor(digest?: Statement[]) {
+    if (digest) this.sequence = digest;
+  }
 
   /**
    * Adds a new statement to the array to be managed
    * @param trueVal The final value of the statement once type-animation is complete
-   * @param displayVal The currently displayed stage of the type-animation
    * @param etchRate How quickly in ms each letter is rendered
    * @param postDelay How long to pause after arriving at the end of the type-animation before starting the next
    * @param complete A function to perform once this statement is fully type-animated
@@ -28,12 +33,20 @@ export class Monologue {
    */
   addStatement(
     trueVal: string,
-    displayVal: string,
     etchRate: number,
+    bipCode: number,
     postDelay: number,
     complete?: (statement: Statement) => {}
   ): number {
-    this.sequence.push({ trueVal, displayVal, etchRate, postDelay, complete });
+    let displayVal = '';
+    this.sequence.push({
+      trueVal,
+      displayVal,
+      etchRate,
+      bipCode,
+      postDelay,
+      complete,
+    });
     return this.sequence.length - 1;
   }
 
@@ -48,7 +61,9 @@ export class Monologue {
       const statement = this.sequence[i];
       //Iterate the final value of the type-animation, each time assinging an updated portion to the display value
       for (let a = 0; a < statement.trueVal.length; a++) {
-        statement.displayVal = statement.trueVal.substring(0, a + 1);
+        statement.displayVal =
+          statement.trueVal.substring(0, a + 1) +
+          (statement.trueVal.length > a + 1 ? '_' : '');
         //Delay according the the etchrate before the next update
         await asyncTools.delay(statement.etchRate);
       }
@@ -59,5 +74,11 @@ export class Monologue {
     }
     //Set monologue status to complete once the sequence is fully iterated
     this.complete = true;
+    let flip = true;
+    setInterval(() => {
+      this.sequence[this.sequence.length - 1].displayVal =
+        this.sequence[this.sequence.length - 1].trueVal + (flip ? '_' : '');
+      flip = !flip;
+    }, 500);
   }
 }

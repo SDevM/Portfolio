@@ -1,3 +1,4 @@
+import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { asyncTools } from 'src/app/tools/async.toolset';
 
@@ -14,6 +15,8 @@ export class Monologue {
   public get typeTrail(): Statement[] {
     return this.sequence;
   }
+
+  private soundPlayer: SoundPlayer = new SoundPlayer();
 
   /**
    * Create a new Monologue, an initial sequence may be provided
@@ -36,7 +39,8 @@ export class Monologue {
     etchRate: number,
     bipCode: number,
     postDelay: number,
-    complete?: (statement: Statement) => {}
+    preComplete?: (index: number) => void,
+    postComplete?: (index: number) => void
   ): number {
     let displayVal = '';
     this.sequence.push({
@@ -45,9 +49,14 @@ export class Monologue {
       etchRate,
       bipCode,
       postDelay,
-      complete,
+      preComplete,
+      postComplete,
     });
     return this.sequence.length - 1;
+  }
+
+  replaceVal(indexes: number[], replace: string) {
+    indexes.forEach((index) => (this.sequence[index].displayVal = replace));
   }
 
   /**
@@ -59,25 +68,31 @@ export class Monologue {
      */
     for (let i = 0; i < this.sequence.length; i++) {
       const statement = this.sequence[i];
-      //Iterate the final value of the type-animation, each time assinging an updated portion to the display value
+      //Iterate the final value of the type-animation, each time assigning an updated portion to the display value
       for (let a = 0; a < statement.trueVal.length; a++) {
         statement.displayVal =
           statement.trueVal.substring(0, a + 1) +
           (statement.trueVal.length > a + 1 ? '_' : '');
+        //Play sound based on bipCode
+        this.soundPlayer.bip(statement.bipCode, 0.2);
         //Delay according the the etchrate before the next update
         await asyncTools.delay(statement.etchRate);
       }
       //If there is a complete function, trigger it once the final value is reached
-      if (statement.complete) statement.complete(statement);
+      if (statement.preComplete) statement.preComplete(i);
       //Delay according to the postdelay before the next statement begins
       await asyncTools.delay(statement.postDelay);
+      //If there is a complete function, trigger it once the final value is reached
+      if (statement.postComplete) statement.postComplete(i);
     }
     //Set monologue status to complete once the sequence is fully iterated
     this.complete = true;
+    //Initiate false cursor animation
     let flip = true;
+    let buffer = this.sequence[this.sequence.length - 1].displayVal;
     setInterval(() => {
       this.sequence[this.sequence.length - 1].displayVal =
-        this.sequence[this.sequence.length - 1].trueVal + (flip ? '_' : '');
+        buffer + (flip ? '_' : '');
       flip = !flip;
     }, 500);
   }

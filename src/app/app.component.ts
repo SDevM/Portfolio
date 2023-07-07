@@ -17,6 +17,9 @@ export class AppComponent {
   }
 
   @HostListener('document:mousemove')
+  /**
+   * Digest mouse movement in order to control screen saver logic
+   */
   onMouseMove() {
     this.screenSave = false;
     clearTimeout(this.stopwatch);

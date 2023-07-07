@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SummaryComponent } from './components/summary/summary.component';
+import { ConfigComponent } from './components/config/config.component';
 
 const routes: Routes = [
-  { path: '', component: SummaryComponent },
+  { path: '', component: ConfigComponent },
+  { path: 'summary', component: SummaryComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

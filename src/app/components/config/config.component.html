@@ -1,0 +1,30 @@
+<section id="config">
+  <span class="sdevm">SDEVM</span>
+  <div class="menu">
+    <div (click)="music()" class="spread">
+      <span>MUSIC</span>
+      <img
+        [src]="
+          configs.music() ? 'assets/icons/music.png' : 'assets/icons/off.png'
+        "
+      />
+    </div>
+    <div (click)="sfx()" class="spread">
+      <span>SFX</span>
+      <img
+        [src]="configs.sfx() ? 'assets/icons/sfx.png' : 'assets/icons/off.png'"
+      />
+    </div>
+    <div (click)="type()" class="spread">
+      <span>ANIMATED TYPING</span>
+      <img
+        [src]="
+          configs.animatedText()
+            ? 'assets/icons/type.png'
+            : 'assets/icons/off.png'
+        "
+      />
+    </div>
+    <span routerLink="summary" class="continue">CONTINUE</span>
+  </div>
+</section>

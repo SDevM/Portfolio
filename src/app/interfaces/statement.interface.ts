@@ -7,5 +7,6 @@ export interface Statement {
   bipCode: number;
   etchRate: number;
   postDelay: number;
-  complete?: (statement: Statement) => {};
+  preComplete?: (index: number) => void;
+  postComplete?: (index: number) => void;
 }

@@ -1,0 +1,71 @@
+#config {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+}
+
+//Portrait screens with consideration for mobile screens that lose portrait ratio when the keyboard is up
+@media only screen and (orientation: portrait), (max-width: 480px) {
+}
+
+//Landscape screen in variety
+@media only screen and (orientation: landscape) {
+  //TVs and Extra Wide Screens
+  @media (min-width: 1921px) {
+  }
+  //Desktops and Large Tablet Screens
+  @media (max-width: 1920px) {
+    #config .sdevm {
+      position: absolute;
+      width: fit-content;
+      height: fit-content;
+      top: 1vw;
+      left: 1vw;
+      font-size: 28px;
+      color: white;
+    }
+
+    #config .menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      padding: 2vw;
+      width: 50vw;
+      height: 50vh;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      line-height: 200%;
+      color: black;
+      border: 5px solid #44aa44;
+      background: #77cc77;
+    }
+
+    #config .menu .spread {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 1% 0 1%;
+    }
+
+    #config .menu .continue:hover {
+      cursor: pointer;
+    }
+
+    #config .menu .spread:hover {
+      cursor: pointer;
+      background: #0004;
+    }
+
+    #config .menu .spread img {
+      height: 40px;
+    }
+  }
+  //Phones and Tablets up to Laptops and Small Monitors
+  @media (max-width: 1280px) {
+  }
+}

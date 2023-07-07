@@ -1,6 +1,7 @@
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { asyncTools } from 'src/app/tools/async.toolset';
+import { ConfigService } from '../services/config.service';
 
 /**
  * Abstracts management of a type-animated sequence
@@ -16,13 +17,13 @@ export class Monologue {
     return this.sequence;
   }
 
-  private soundPlayer: SoundPlayer = new SoundPlayer();
+  private soundPlayer: SoundPlayer = new SoundPlayer(this.configs);
 
   /**
    * Create a new Monologue, an initial sequence may be provided
    * @param digest Initial sequence of statement, more can be added using addStatement
    */
-  constructor(digest?: Statement[]) {
+  constructor(private digest?: Statement[], private configs?: ConfigService) {
     if (digest) this.sequence = digest;
   }
 
@@ -63,28 +64,29 @@ export class Monologue {
    * Executes the type-animation sequence
    */
   async init() {
+    if (this.configs && this.configs.animatedText() == false) this.skip();
     /**
-     * Iterate the statement array
-     */
-    for (let i = 0; i < this.sequence.length; i++) {
-      const statement = this.sequence[i];
-      //Iterate the final value of the type-animation, each time assigning an updated portion to the display value
-      for (let a = 0; a < statement.trueVal.length; a++) {
-        statement.displayVal =
-          statement.trueVal.substring(0, a + 1) +
-          (statement.trueVal.length > a + 1 ? '_' : '');
-        //Play sound based on bipCode
-        this.soundPlayer.bip(statement.bipCode, 0.2);
-        //Delay according the the etchrate before the next update
-        await asyncTools.delay(statement.etchRate);
+     * Iterate the statement array if animated text is on
+     */ else
+      for (let i = 0; i < this.sequence.length; i++) {
+        const statement = this.sequence[i];
+        //Iterate the final value of the type-animation, each time assigning an updated portion to the display value
+        for (let a = 0; a < statement.trueVal.length; a++) {
+          statement.displayVal =
+            statement.trueVal.substring(0, a + 1) +
+            (statement.trueVal.length > a + 1 ? '_' : '');
+          //Play sound based on bipCode
+          this.soundPlayer.bip(statement.bipCode, 0.5);
+          //Delay according the the etchrate before the next update
+          await asyncTools.delay(statement.etchRate);
+        }
+        //If there is a complete function, trigger it once the final value is reached
+        if (statement.preComplete) statement.preComplete(i);
+        //Delay according to the postdelay before the next statement begins
+        await asyncTools.delay(statement.postDelay);
+        //If there is a complete function, trigger it once the final value is reached
+        if (statement.postComplete) statement.postComplete(i);
       }
-      //If there is a complete function, trigger it once the final value is reached
-      if (statement.preComplete) statement.preComplete(i);
-      //Delay according to the postdelay before the next statement begins
-      await asyncTools.delay(statement.postDelay);
-      //If there is a complete function, trigger it once the final value is reached
-      if (statement.postComplete) statement.postComplete(i);
-    }
     //Set monologue status to complete once the sequence is fully iterated
     this.complete = true;
     //Initiate false cursor animation
@@ -95,5 +97,14 @@ export class Monologue {
         buffer + (flip ? '_' : '');
       flip = !flip;
     }, 500);
+  }
+
+  /**
+   * Skips the animation process
+   */
+  skip() {
+    this.sequence.forEach(
+      (statement) => (statement.displayVal = statement.trueVal)
+    );
   }
 }

@@ -1,11 +1,15 @@
+import { ConfigService } from '../services/config.service';
+
 export class SoundPlayer {
   private bips: string[] = ['assets/sfx/bip1.wav', 'assets/sfx/bip2.wav'];
   bip(index: number, volume: number) {
+    if (this.configs && !this.configs.sfx()) return;
     if (index != -1) this.play(this.bips[index], volume);
   }
 
   private rings: string[] = ['assets/sfx/ring.wav'];
   ring(index: number, volume: number): () => void {
+    if (this.configs && !this.configs.sfx()) return () => {};
     return this.playLoop(this.rings[index], volume);
   }
 
@@ -13,8 +17,22 @@ export class SoundPlayer {
     ['open', 'assets/sfx/Unlock.mp3'],
   ]);
   sfx(name: string, volume: number) {
+    if (this.configs && !this.configs.sfx()) return;
     if (this.sfxList.has(name)) this.play(this.sfxList.get(name)!, volume);
   }
+
+  private musicList: Map<string, string> = new Map([
+    ['suspense', 'assets/music/suspense.mp3'],
+  ]);
+  music(name: string, volume: number): () => void {
+    if (this.configs && !this.configs.music()) return () => {};
+    else if (this.musicList.has(name)) {
+      return this.playLoop(this.musicList.get(name)!, volume);
+    }
+    return () => {};
+  }
+
+  constructor(private configs?: ConfigService) {}
 
   /**
    * Plays a sound once

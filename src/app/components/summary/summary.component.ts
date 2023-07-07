@@ -110,5 +110,6 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.stopRinging();
     this.stopMusic();
+    this.monologue.halt();
   }
 }

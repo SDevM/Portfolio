@@ -64,6 +64,7 @@ export class Monologue {
    * Executes the type-animation sequence
    */
   async init() {
+    this.complete = false;
     if (this.configs && this.configs.animatedText() == false) this.skip();
     /**
      * Iterate the statement array if animated text is on
@@ -72,6 +73,7 @@ export class Monologue {
         const statement = this.sequence[i];
         //Iterate the final value of the type-animation, each time assigning an updated portion to the display value
         for (let a = 0; a < statement.trueVal.length; a++) {
+          if (this.complete) return;
           statement.displayVal =
             statement.trueVal.substring(0, a + 1) +
             (statement.trueVal.length > a + 1 ? '_' : '');
@@ -106,5 +108,12 @@ export class Monologue {
     this.sequence.forEach(
       (statement) => (statement.displayVal = statement.trueVal)
     );
+  }
+
+  /**
+   * Forcefully stops functionality
+   */
+  halt() {
+    this.complete = true;
   }
 }

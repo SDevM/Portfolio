@@ -1,7 +1,7 @@
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { asyncTools } from 'src/app/tools/async.toolset';
-import { ConfigService } from '../services/config.service';
+import { ConfigService } from '../tools/services/config.service';
 
 /**
  * Abstracts management of a type-animated sequence

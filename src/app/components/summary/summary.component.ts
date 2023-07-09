@@ -8,7 +8,7 @@ import {
 import { Monologue } from '../../classes/monologue';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
-import { ConfigService } from 'src/app/services/config.service';
+import { ConfigService } from 'src/app/tools/services/config.service';
 
 @Component({
   selector: 'app-summary',
@@ -17,6 +17,7 @@ import { ConfigService } from 'src/app/services/config.service';
 })
 export class SummaryComponent implements AfterViewInit, OnDestroy {
   private soundPlayer: SoundPlayer = new SoundPlayer(this.configs);
+  public phase2 = false;
   private monologue: Monologue = new Monologue(
     [
       {
@@ -62,7 +63,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
         postDelay: 1000 * 0.5,
       },
       {
-        trueVal: '█!█@██#$█^ (encrypted)',
+        trueVal: 'lat:█!█@█ long:█#$█^',
         etchRate: 1000 * 0.1,
         bipCode: 1,
         postDelay: 1000 * 0.5,
@@ -77,11 +78,86 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
         trueVal: '...',
         etchRate: 1000 * 1,
         bipCode: 1,
-        postDelay: 1000 * 0,
-        postComplete: (index) => {
+        postDelay: 1000 * 2,
+        preComplete: (index) => {
           this.monologue.replaceVal([index, index - 1], '');
           this.soundPlayer.sfx('open', 0.8);
+          this.phase2 = true;
         },
+      },
+      {
+        trueVal:
+          'The target has been investigated. Initializing the report on this mysterious individual...',
+        etchRate: 1000 * 0.03,
+        bipCode: 0,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          "Our background checks show that he is from the island of Jamaica, a beautiful tropical country in the Caribbean. There, he fell in love with video games and decided to become a programmer, what he would consider a 'logic wizard' performing magical feats of 1s and 0s.",
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          'Surveillance shows he enjoys playing volleyball, reading manga and playing video games in his free time. Even though he’s a [software developer], he seems to enjoy coding in his free time as well!',
+        etchRate: 1000 * 0.03,
+        bipCode: 0,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          "After interrogating his acquaintances we've gained critical information on his character...",
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal: ' -> Interrogation Room',
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          'Subject Skull: ‘Talented and fearless. One who relentlessly breaks limits and creates the extraordinary.’',
+        etchRate: 1000 * 0.03,
+        bipCode: 0,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          'Subject Steel: ‘A calculative soul with an eye for detail and a creed of persistence that can adapt to any change.’',
+        etchRate: 1000 * 0.03,
+        bipCode: 0,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          'Subject Rose: ‘A true ninja and devoted master of the ancient arts of web development. Seamlessly using prowess in stealth and precision to integrate stacks into peerless websites.’',
+        etchRate: 1000 * 0.03,
+        bipCode: 0,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal:
+          "Captain, given the information we've compiled, we think he would be a great asset to your team! Access their past projects and resume below.",
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal: 'View Projects',
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
+      },
+      {
+        trueVal: 'DOWNLOAD RESUME DATA',
+        etchRate: 1000 * 0.03,
+        bipCode: 1,
+        postDelay: 1000 * 1,
       },
     ],
     this.configs

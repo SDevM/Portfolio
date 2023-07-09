@@ -1,4 +1,4 @@
-import { ConfigService } from '../services/config.service';
+import { ConfigService } from '../tools/services/config.service';
 
 export class SoundPlayer {
   private bips: string[] = ['assets/sfx/bip1.wav', 'assets/sfx/bip2.wav'];
@@ -14,7 +14,9 @@ export class SoundPlayer {
   }
 
   private sfxList: Map<string, string> = new Map([
-    ['open', 'assets/sfx/Unlock.mp3'],
+    ['open', 'assets/sfx/begin.mp3'],
+    ['yes', 'assets/sfx/yes.mp3'],
+    ['no', 'assets/sfx/no.mp3'],
   ]);
   sfx(name: string, volume: number) {
     if (this.configs && !this.configs.sfx()) return;

@@ -3,14 +3,16 @@
   width: 100vw;
   height: 100vh;
   background: black;
+  overflow-y: scroll;
 }
 
-//Portrait screens with consideration for mobile screens that lose portrait ratio when the keyboard is up
-@media only screen and (orientation: portrait), (max-width: 480px) {
+#config::-webkit-scrollbar {
+  width: 0;
+  display: none;
 }
 
 //Landscape screen in variety
-@media only screen and (orientation: landscape) {
+@media only screen {
   //TVs and Extra Wide Screens
   @media (min-width: 1921px) {
   }
@@ -22,7 +24,7 @@
       height: fit-content;
       top: 1vw;
       left: 1vw;
-      font-size: 28px;
+      font-size: 1.25rem;
       color: white;
     }
 
@@ -38,7 +40,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 24px;
+      font-size: 1rem;
       line-height: 200%;
       color: black;
       border: 5px solid #44aa44;
@@ -67,5 +69,56 @@
   }
   //Phones and Tablets up to Laptops and Small Monitors
   @media (max-width: 1280px) {
+  }
+  //Forced vertical
+  @media (max-width: 720px) {
+    #config .sdevm {
+      position: absolute;
+      width: fit-content;
+      height: fit-content;
+      top: 1vw;
+      left: 1vw;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    #config .menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      position: absolute;
+      padding: 2vw;
+      width: 90vw;
+      height: 50vh;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      line-height: 200%;
+      color: black;
+      border: 5px solid #44aa44;
+      background: #77cc77;
+    }
+
+    #config .menu .spread {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 1% 0 1%;
+    }
+
+    #config .menu .continue:hover {
+      cursor: pointer;
+    }
+
+    #config .menu .spread:hover {
+      cursor: pointer;
+      background: #0004;
+    }
+
+    #config .menu .spread img {
+      height: 40px;
+    }
   }
 }

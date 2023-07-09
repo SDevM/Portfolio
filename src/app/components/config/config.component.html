@@ -10,7 +10,7 @@
       />
     </div>
     <div (click)="sfx()" class="spread">
-      <span>SFX</span>
+      <span>SFX/UI</span>
       <img
         [src]="configs.sfx() ? 'assets/icons/sfx.png' : 'assets/icons/off.png'"
       />
@@ -25,6 +25,6 @@
         "
       />
     </div>
-    <span routerLink="summary" class="continue">CONTINUE</span>
+    <span (click)="continue()" routerLink="summary" class="continue">CONTINUE</span>
   </div>
 </section>

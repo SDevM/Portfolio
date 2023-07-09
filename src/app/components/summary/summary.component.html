@@ -45,12 +45,49 @@
         <span class="line3"
           >{{ sequence[4].displayVal }}{{ sequence[5].displayVal }}</span
         >
-        <span class="line4"
+        <span class="line3"
           >{{ sequence[6].displayVal }}{{ sequence[7].displayVal }}</span
         >
-        <span class="line5"
+        <span class="line4"
           >{{ sequence[8].displayVal }}{{ sequence[9].displayVal }}</span
         >
+      </div>
+      <div *ngIf="phase2" class="baseBox">
+        <span *ngIf="sequence[10].displayVal" class="line5"
+          >"{{ sequence[10].displayVal }}"</span
+        ><br />
+        <span *ngIf="sequence[11].displayVal" class="line5"
+          >"{{ sequence[11].displayVal }}"</span
+        ><br />
+        <span *ngIf="sequence[12].displayVal" class="line5"
+          >"{{ sequence[12].displayVal }}"</span
+        ><br />
+        <span
+          ><span *ngIf="sequence[13].displayVal" class="line5"
+            >"{{ sequence[13].displayVal }}"</span
+          ><span *ngIf="sequence[14].displayVal" class="line5 underlink">{{
+            sequence[14].displayVal
+          }}</span></span
+        ><br />
+        <span *ngIf="sequence[15].displayVal" class="line6">{{
+          sequence[15].displayVal
+        }}</span>
+        <span *ngIf="sequence[16].displayVal" class="line7">{{
+          sequence[16].displayVal
+        }}</span>
+        <span *ngIf="sequence[17].displayVal" class="line8">{{
+          sequence[17].displayVal
+        }}</span
+        ><br />
+        <span *ngIf="sequence[18].displayVal" class="line5"
+          >"{{ sequence[18].displayVal }}"</span
+        >
+        <span *ngIf="sequence[19].displayVal" class="line5 link">{{
+          sequence[19].displayVal
+        }}</span>
+        <span *ngIf="sequence[20].displayVal" class="line5 link">{{
+          sequence[20].displayVal
+        }}</span>
       </div>
     </div>
   </span>

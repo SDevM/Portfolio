@@ -8,7 +8,7 @@ import {
 import { Monologue } from '../../classes/monologue';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
-import { ConfigService } from 'src/app/tools/services/config.service';
+import { ConfigService } from 'src/app/services/config.service';
 
 @Component({
   selector: 'app-summary',

@@ -13,7 +13,7 @@
 
 // Lines
 #summary .line1 {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 #summary .line2 {
   font-size: 0.5rem;
@@ -52,9 +52,11 @@
 #summary .underlink {
   color: #0000ff;
   text-decoration: underline;
+  cursor: pointer;
 }
 #summary .link {
   color: #0000ff;
+  cursor: pointer;
 }
 
 // Other
@@ -78,6 +80,8 @@
   position: absolute;
   top: 50%;
   left: 110%;
+  width: 1.5rem;
+  height: 1.5rem;
   transform: translateY(-50%);
   z-index: 1;
 }
@@ -86,6 +90,8 @@
   position: absolute;
   top: 50%;
   left: calc(110% + 40px);
+  width: 1.5rem;
+  height: 1.5rem;
   transform: translateY(-50%);
   z-index: 1;
 }
@@ -94,6 +100,7 @@
   position: absolute;
   width: 6rem;
   height: 6rem;
+  cursor: default;
 }
 
 #summary .sdevm .avatar:after {
@@ -150,9 +157,29 @@
 @media only screen {
   //TVs and Extra Wide Screens
   @media (min-width: 1921px) {
+    #summary .sdevm .avatar {
+      top: 100%;
+      left: 100%;
+    }
+    #summary .sdevm .avatar .baseBox {
+      width: 60vw;
+      height: 72vh;
+      top: 120%;
+      left: 0;
+    }
   }
   //Desktops, Laptops and Large Tablet Screens
   @media (max-width: 1920px) {
+    #summary .sdevm .avatar {
+      top: 100%;
+      left: 100%;
+    }
+    #summary .sdevm .avatar .baseBox {
+      width: 60vw;
+      height: 72vh;
+      top: 120%;
+      left: 0;
+    }
   }
   //Tablets, Laptops and Small Monitors
   @media (max-width: 1280px) {
@@ -163,12 +190,12 @@
     #summary .sdevm .avatar .baseBox {
       width: 60vw;
       height: 72vh;
-      top: 110%;
+      top: 120%;
       left: 0;
     }
   }
   //Forced Vertical
-  @media (max-width: 720px) {
+  @media (max-width: 720px), (orientation: portrait) {
     #summary .sdevm .avatar {
       top: 100%;
       left: 0;
@@ -177,7 +204,7 @@
       position: fixed;
       width: 90vw;
       height: 72vh;
-      top: 25%;
+      top: 12rem;
       left: 50%;
       transform: translateX(-50%);
     }

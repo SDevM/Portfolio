@@ -1,7 +1,7 @@
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { asyncTools } from 'src/app/tools/async.toolset';
-import { ConfigService } from '../tools/services/config.service';
+import { ConfigService } from '../services/config.service';
 
 /**
  * Abstracts management of a type-animated sequence
@@ -78,7 +78,7 @@ export class Monologue {
             statement.trueVal.substring(0, a + 1) +
             (statement.trueVal.length > a + 1 ? '_' : '');
           //Play sound based on bipCode
-          this.soundPlayer.bip(statement.bipCode, 0.5);
+          this.soundPlayer.bip(statement.bipCode, 0.2);
           //Delay according the the etchrate before the next update
           await asyncTools.delay(statement.etchRate);
         }
@@ -105,9 +105,11 @@ export class Monologue {
    * Skips the animation process
    */
   skip() {
-    this.sequence.forEach(
-      (statement) => (statement.displayVal = statement.trueVal)
-    );
+    this.sequence.forEach((statement, i) => {
+      statement.displayVal = statement.trueVal;
+      if (statement.preComplete) statement.preComplete(i);
+      if (statement.postComplete) statement.postComplete(i);
+    });
   }
 
   /**

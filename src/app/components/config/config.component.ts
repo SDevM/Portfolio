@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
-import { ConfigService } from 'src/app/tools/services/config.service';
+import { ConfigService } from 'src/app/services/config.service';
 
 @Component({
   selector: 'app-config',
@@ -20,12 +20,12 @@ export class ConfigComponent {
     this.configs.sfx.update((val) => !val);
 
     if (this.configs.sfx()) this.soundPlayer.sfx('yes', 0.5);
-    else this.soundPlayer.sfx('no', 0.5);
+    else this.soundPlayer.sfx('no', 0.8);
   }
   type() {
     this.configs.animatedText.update((val) => !val);
     if (this.configs.animatedText()) this.soundPlayer.sfx('yes', 0.5);
-    else this.soundPlayer.sfx('no', 0.5);
+    else this.soundPlayer.sfx('no', 0.8);
   }
   continue() {
     this.soundPlayer.sfx('open', 0.5);

@@ -1,4 +1,4 @@
-import { ConfigService } from '../tools/services/config.service';
+import { ConfigService } from '../services/config.service';
 
 export class SoundPlayer {
   private bips: string[] = ['assets/sfx/bip1.wav', 'assets/sfx/bip2.wav'];

@@ -14,10 +14,7 @@
 //Landscape screen in variety
 @media only screen {
   //TVs and Extra Wide Screens
-  @media (min-width: 1921px) {
-  }
-  //Desktops and Large Tablet Screens
-  @media (max-width: 1920px) {
+  @media (min-width: 1921px), (max-width: 1920px), (max-width: 1280px) {
     #config .sdevm {
       position: absolute;
       width: fit-content;
@@ -67,11 +64,8 @@
       height: 40px;
     }
   }
-  //Phones and Tablets up to Laptops and Small Monitors
-  @media (max-width: 1280px) {
-  }
   //Forced vertical
-  @media (max-width: 720px) {
+  @media (max-width: 720px), (orientation: portrait) {
     #config .sdevm {
       position: absolute;
       width: fit-content;

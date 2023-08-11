@@ -16,8 +16,11 @@ import { ConfigService } from 'src/app/services/config.service';
   styleUrls: ['./summary.component.scss'],
 })
 export class SummaryComponent implements AfterViewInit, OnDestroy {
+  // Responsible for playing audio
   private soundPlayer: SoundPlayer = new SoundPlayer(this.configs);
+  // A trigger used to begin the second phase of the summary animation
   public phase2 = false;
+  // Contains the main script for the page
   private monologue: Monologue = new Monologue(
     [
       {
@@ -162,20 +165,39 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     ],
     this.configs
   );
+  // List of skills to display on the skillwheel
+  private skills: string[] = [];
+
   constructor(private configs: ConfigService) {}
 
+  // Used to access the text values for display as they are updated by the monologue
   public get sequence(): Statement[] {
     return this.monologue.typeTrail;
   }
 
+  // Prepare funcitons needed to stop looped sounds
   private stopRinging: () => void = () => {};
   private stopMusic: () => void = () => {};
   ngAfterViewInit(): void {
     this.stopRinging = this.soundPlayer.ring(0, 0.2);
     this.stopMusic = this.soundPlayer.music('suspense', 0.3);
-  }
-  @ViewChild('startSpan') startSpan!: ElementRef<HTMLSpanElement>;
 
+    // Prepare scroll behavior for the skill wheel
+    let prevScroll = this.skillWheel.nativeElement.scrollTop;
+    let angularUnit = 360 / this.skills.length;
+    this.skills.forEach((skill, i) => {});
+    this.skillWheel.nativeElement.addEventListener('scroll', (event: Event) => {
+      if (this.skillWheel.nativeElement.scrollTop > prevScroll) {
+      }
+    });
+  }
+  // Children of the component that appear in html and need to be dynamically modified
+  @ViewChild('startSpan') startSpan!: ElementRef<HTMLSpanElement>;
+  @ViewChild('skillWheel') skillWheel!: ElementRef<HTMLDivElement>;
+
+  /**
+   * Begins the summary
+   */
   start() {
     this.startSpan.nativeElement.remove();
     this.stopRinging();

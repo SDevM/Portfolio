@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100vh;
   background: black;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 #summary::-webkit-scrollbar {
@@ -211,13 +211,44 @@
   }
 }
 
-#summary .skillwheel {
-  display: block;
-  position: absolute;
-  top: 50vh;
-  right: -100vh;
-  width: 150vh;
-  height: 150vh;
-  transform: translateY(-50%);
-  background: white;
+@media only screen {
+  //TVs and Extra Wide Screens
+  @media (min-width: 1921px) {
+  }
+  //Desktops and Large Tablet Screens
+  @media (max-width: 1920px) {
+    #summary .skillwheel {
+      display: block;
+      position: absolute;
+      top: 50vh;
+      right: calc(-100vw + 25vw);
+      width: 100vw;
+      height: 100vw;
+      transform: translateY(-50%);
+      transition: opacity 2s linear;
+      opacity: 0;
+      font-size: 0.7rem;
+    }
+  }
+  //Phones and Tablets up to Laptops and Small Monitors
+  @media (max-width: 1600px) {
+    #summary .skillwheel {
+      display: block;
+      position: absolute;
+      top: 50vh;
+      right: calc(-100vw + 20vw);
+      width: 100vw;
+      height: 100vw;
+      transform: translateY(-50%);
+      transition: opacity 2s linear;
+      opacity: 0;
+      font-size: 0.5rem;
+    }
+  }
+  //Force Vertical
+  @media (max-width: 720px), (orientation: portrait) {
+    #summary .skillwheel {
+      display: none;
+    }
+  }
 }

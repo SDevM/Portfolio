@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  HostListener,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -9,6 +10,9 @@ import { Monologue } from '../../classes/monologue';
 import { Statement } from 'src/app/interfaces/statement.interface';
 import { SoundPlayer } from 'src/app/helpers/soundPlayer.helper';
 import { ConfigService } from 'src/app/services/config.service';
+import { gsap } from 'gsap';
+import { Throttle } from 'src/app/classes/throttle';
+import { CustomEase } from 'gsap/all';
 
 @Component({
   selector: 'app-summary',
@@ -86,6 +90,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
           this.monologue.replaceVal([index, index - 1], '');
           this.soundPlayer.sfx('open', 0.8);
           this.phase2 = true;
+          this.skillWheel.nativeElement.style.opacity = '1';
         },
       },
       {
@@ -166,9 +171,21 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     this.configs
   );
   // List of skills to display on the skillwheel
-  private skills: string[] = [];
+  private skills: string[] = [
+    'HTML/CSS/Js',
+    'TypeScript(Angular)',
+    'Node.js(Express)',
+    'Python',
+    'Flutter (Android)',
+    'Unity 2D',
+    'Database Management',
+    'Project Management',
+    'Team Leadership',
+  ];
 
-  constructor(private configs: ConfigService) {}
+  constructor(private configs: ConfigService) {
+    gsap.registerPlugin(CustomEase);
+  }
 
   // Used to access the text values for display as they are updated by the monologue
   public get sequence(): Statement[] {
@@ -178,18 +195,12 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   // Prepare funcitons needed to stop looped sounds
   private stopRinging: () => void = () => {};
   private stopMusic: () => void = () => {};
+  private scrollThrottle?: Throttle;
+
   ngAfterViewInit(): void {
     this.stopRinging = this.soundPlayer.ring(0, 0.2);
     this.stopMusic = this.soundPlayer.music('suspense', 0.3);
-
-    // Prepare scroll behavior for the skill wheel
-    let prevScroll = this.skillWheel.nativeElement.scrollTop;
-    let angularUnit = 360 / this.skills.length;
-    this.skills.forEach((skill, i) => {});
-    this.skillWheel.nativeElement.addEventListener('scroll', (event: Event) => {
-      if (this.skillWheel.nativeElement.scrollTop > prevScroll) {
-      }
-    });
+    this.configSkillWheel();
   }
   // Children of the component that appear in html and need to be dynamically modified
   @ViewChild('startSpan') startSpan!: ElementRef<HTMLSpanElement>;
@@ -203,6 +214,68 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     this.stopRinging();
     this.stopRinging = () => {};
     this.monologue.init();
+  }
+
+  configSkillBubble(div: HTMLDivElement, span: HTMLSpanElement, skill: string) {
+    div.appendChild(span);
+    span.innerText = skill;
+    span.style.position = 'absolute';
+    span.style.padding = '0.5rem 1rem';
+    span.style.border = 'solid 0.25rem white';
+    span.style.borderRadius = '0.5rem';
+    span.style.translate = '0 -50%';
+    this.skillWheel.nativeElement.appendChild(div);
+    div.style.position = 'absolute';
+    div.style.top = '50%';
+    div.style.left = '50%';
+    div.style.width = 'max-content';
+    div.style.color = 'white';
+  }
+
+  configSkillWheel() {
+    // Prepare scroll behavior for the skill wheel
+    let angularUnit = 360 / this.skills.length;
+    let angle = 0;
+
+    this.scrollThrottle = new Throttle(500, (params: any[]) => {
+      angle += params[0] * angularUnit;
+      var tween = gsap.to(this.skillWheel.nativeElement, {
+        rotation: angle,
+        duration: 0.5,
+        ease: CustomEase.create(
+          'custom',
+          'M0,0 C0.14,0 0.426,0.401 0.436,0.414 0.492,0.484 0.719,0.981 0.726,0.998 0.788,0.914 0.84,0.936 0.859,0.95 0.878,0.964 0.897,0.985 0.911,0.998 0.922,0.994 0.939,0.984 0.954,0.984 0.969,0.984 1,1 1,1 '
+        ),
+      });
+      console.log(tween, params[0] * angularUnit);
+    });
+
+    this.skillWheel.nativeElement.innerHTML = '';
+    this.skills.forEach((skill, i) => {
+      let skillCartesian = document.createElement('span');
+      let skillElement = document.createElement('div');
+      this.configSkillBubble(skillElement, skillCartesian, skill);
+
+      // Rotate the skill elements and translate them in order to create a circle
+      gsap.set(skillElement, {
+        rotation: -i * angularUnit,
+      });
+      gsap.set(skillCartesian, {
+        translateX: (this.skillWheel.nativeElement.offsetWidth / 2) * -1,
+      });
+    });
+    this.skillWheel.nativeElement.onscroll = () => {};
+    this.skillWheel.nativeElement.addEventListener(
+      'wheel',
+      (event: WheelEvent) => {
+        this.scrollThrottle?.tick([event.deltaY / 100]);
+      }
+    );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.configSkillWheel();
   }
 
   ngOnDestroy(): void {
